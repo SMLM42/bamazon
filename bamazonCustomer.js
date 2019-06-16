@@ -24,17 +24,6 @@ function customerInitialize() {
     });
 }
 
-
-// function multiSearch() {
-//     var query = "SELECT artist FROM top5000 GROUP BY artist HAVING count(*) > 1";
-//     connection.query(query, function (err, res) {
-//         for (var i = 0; i < res.length; i++) {
-//             console.log(res[i].artist);
-//         }
-//         runSearch();
-//     });
-// }
-
 function customerInterface() {
     inquirer
         .prompt([
@@ -56,7 +45,7 @@ function customerInterface() {
                 if (err) throw err;
                 var selected_product = res
                 var id = answer.id
-                console.log(selected_product)
+                console.log("Selected Product Info: " + "\n" + "____________" + "\n" + "Product Name: " + res[0].product_name + "\n" + "Product ID: " + answer.id + "\n" + "Department: " + res[0].department_name + "\n" + "Price: $" + res[0].price + "\n" + "Stock Quantity: " + res[0].stock_quantity + "\n" + "____________" + "\n")
                 inquirer
                     .prompt([
                         {
@@ -74,7 +63,7 @@ function customerInterface() {
                     .then(function (answer) {
                         if (res[0].stock_quantity > answer.amount) {
                             var total_price = (parseInt(res[0].price) * parseInt(answer.amount))
-                            console.log("$" + total_price + ".00")
+
                             var query = connection.query(
                                 "UPDATE products SET ? WHERE ?",
                                 [
@@ -86,7 +75,7 @@ function customerInterface() {
                                     }
                                 ],
                                 function (err, res) {
-                                    console.log(res.affectedRows + " products updated!\n");
+
 
                                 }
                             );
@@ -100,7 +89,9 @@ function customerInterface() {
         })
 }
 function customerReciept(total_price) {
-    console.log("You spent a total of $" + total_price + ".00")
+    if (total_price != undefined) {
+        console.log("You spent a total of $" + total_price + ".00")
+    }
     inquirer
         .prompt([
             {
